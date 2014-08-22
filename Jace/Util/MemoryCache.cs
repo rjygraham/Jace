@@ -26,7 +26,7 @@ namespace Jace.Util
 
         private long counter; // We cannot use DateTime.Now, because the precission is not high enough.
 
-#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7
+#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7 || PCL
         private readonly Dictionary<TKey, CacheItem> dictionary;
         private readonly Object counterLock = new Object();
 #else
@@ -59,7 +59,7 @@ namespace Jace.Util
             this.maximumSize = maximumSize;
             this.reductionSize = reductionSize;
 
-#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7
+#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7 || PCL
             this.dictionary = new Dictionary<TKey, CacheItem>();
 #else
             this.dictionary = new ConcurrentDictionary<TKey, CacheItem>();
@@ -116,7 +116,7 @@ namespace Jace.Util
             if (valueFactory == null)
                 throw new ArgumentNullException("valueFactory");
 
-#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7
+#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7 || PCL
             lock (dictionary)
             {
                 if (dictionary.ContainsKey(key))
@@ -160,7 +160,7 @@ namespace Jace.Util
 
                 foreach (TKey key in keysToDelete)
                 {
-#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7
+#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7 || PCL
                     dictionary.Remove(key);
 #else
                     CacheItem cacheItem;
@@ -188,7 +188,7 @@ namespace Jace.Util
 
             public void Accessed()
             {
-#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7
+#if WINDOWS_PHONE_8 || WINDOWS_PHONE_7 || PCL
                 lock(cache.counterLock)
                 {
                     this.LastAccessed = cache.counter++;

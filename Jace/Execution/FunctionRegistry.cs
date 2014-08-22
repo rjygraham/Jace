@@ -44,7 +44,7 @@ namespace Jace.Execution
             if (!funcType.FullName.StartsWith("System.Func"))
                 throw new ArgumentException("Only System.Func delegates are permitted.", "function");
 
-#if NETFX_CORE
+#if NETFX_CORE || PCL
             foreach (Type genericArgument in funcType.GenericTypeArguments)
 #else
             foreach (Type genericArgument in funcType.GetGenericArguments())
@@ -60,7 +60,7 @@ namespace Jace.Execution
                 throw new Exception(message);
             }
 
-#if NETFX_CORE
+#if NETFX_CORE || PCL
             int numberOfParameters = function.GetMethodInfo().GetParameters().Length;
 #else
             int numberOfParameters = function.Method.GetParameters().Length;
